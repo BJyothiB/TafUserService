@@ -12,7 +12,7 @@ phases:
       - ./gradlew clean build # Clean and build the Gradle project
       - echo "Logging in to Amazon ECR..."
       - aws --version # Verify AWS CLI version
-      - REPOSITORY_URI=615299733509.dkr.ecr.us-west-1.amazonaws.com/taf/userrepo:userserviceimage
+      - REPOSITORY_URI=615299733509.dkr.ecr.us-west-1.amazonaws.com/taf/userrepo
       - aws ecr get-login-password --region us-west-1 | docker login --username AWS --password-stdin $REPOSITORY_URI
       - echo "Generating commit hash and image tag..."
       - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7) # Extract short commit hash
@@ -32,7 +32,7 @@ phases:
       - docker push $REPOSITORY_URI:latest # Push the "latest" tag to ECR
       - docker push $REPOSITORY_URI:$IMAGE_TAG # Push the build-specific tag to ECR
       - echo "Writing image definitions file..."
-      - DOCKER_CONTAINER_NAME=userservice # Specify container name
+      - DOCKER_CONTAINER_NAME=userservice-image # Specify container name
       - printf '[{"name":"%s","imageUri":"%s"}]' $DOCKER_CONTAINER_NAME $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json # Write final image definitions
       - echo "Printing imagedefinitions.json..."
       - cat imagedefinitions.json # Display the contents of the image definitions file
