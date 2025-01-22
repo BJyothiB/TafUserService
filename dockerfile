@@ -1,3 +1,4 @@
+#FROM Amazoncorreto:17
 
 # Use an OpenJDK 17 image as the base
 FROM openjdk:17-jdk-slim
